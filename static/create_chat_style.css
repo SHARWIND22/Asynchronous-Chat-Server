@@ -1,0 +1,63 @@
+ body {
+     font-family: Arial, sans-serif;
+     background: #f7f7f7;
+     margin: 0;
+     padding: 0;
+ }
+
+ .container {
+     max-width: 400px;
+     margin: 60px auto;
+     background: #fff;
+     padding: 32px 24px;
+     border-radius: 8px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+ }
+
+ .code-box {
+     background: #f0f0f0;
+     border-radius: 4px;
+     padding: 16px;
+     font-family: 'Courier New', Courier, monospace;
+     font-size: 1.1em;
+     margin-bottom: 16px;
+     position: relative;
+ }
+
+ .copy-btn {
+     background: #0078d4;
+     color: #fff;
+     border: none;
+     padding: 8px 16px;
+     border-radius: 4px;
+     cursor: pointer;
+     margin-bottom: 20px;
+     transition: background 0.2s;
+ }
+
+ .copy-btn:active {
+     background: #005fa3;
+ }
+
+ .continue-btn {
+     background: #28a745;
+     color: #fff;
+     border: none;
+     padding: 10px 20px;
+     border-radius: 4px;
+     cursor: pointer;
+     width: 100%;
+     font-size: 1em;
+     transition: background 0.2s;
+ }
+
+ .continue-btn:active {
+     background: #218838;
+ }
+
+ .copied-msg {
+     color: #28a745;
+     font-size: 0.95em;
+     margin-bottom: 10px;
+     display: none;
+ }

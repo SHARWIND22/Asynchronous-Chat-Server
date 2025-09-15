@@ -1,0 +1,76 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(135deg, #e0f7fa 60%, #ffffff 100%);
+  margin: 0;
+}
+
+.login-container {
+  background: #fff;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  min-width: 320px;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #00796b;
+}
+
+.form-label,
+.form-check-label,
+.form-text {
+  font-family: Arial, sans-serif;
+}
+
+#emailHelp.form-text {
+  color: #009688;
+  font-size: 0.95rem;
+  margin-top: 0.25rem;
+  display: block;
+  font-style: italic;
+}
+
+.back-button {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #0d6efd;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.btn-custom {
+  background: linear-gradient(135deg, #ff6ec7, #ff4f9a);
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4);
+  cursor: pointer;
+}
+
+.btn-custom:hover {
+  background: linear-gradient(135deg, #ff4f9a, #ff1f7a);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 20, 147, 0.5);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8),
+    0 0 12px rgba(255, 105, 180, 0.6);
+}
+
+.btn-custom:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(255, 20, 147, 0.4);
+}

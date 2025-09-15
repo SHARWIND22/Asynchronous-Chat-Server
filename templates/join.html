@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Join Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='join_style.css') }}">
+</head>
+
+<body>
+    <div class="join-container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div id="alert-popup" style="
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4757;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+            z-index: 1000;
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        ">
+            🚫 {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+        <script>
+            setTimeout(function () {
+                const alert = document.getElementById('alert-popup');
+                if (alert) {
+                    alert.style.animation = 'fadeOut 0.3s ease-out';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 300);
+                }
+            }, 4000);
+        </script>
+        <h2>Join a Chat Room</h2>
+        <form action="/join" method="post">
+            <input type="text" name="room_code" placeholder="Paste Room Code Here" required>
+            <br>
+            <button type="submit">Join Room</button>
+        </form>
+    </div>
+</body>
+
+</html>

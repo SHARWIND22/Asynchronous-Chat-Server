@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border-radius: 0 0 20px 20px;
+    backdrop-filter: blur(8px);
+}
+
+.navbar .brand {
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: #fff;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 8px rgba(40, 40, 80, 0.2);
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.navbar .nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+    padding: 0.3rem 0.8rem;
+    border-radius: 8px;
+}
+
+.navbar .nav-links a:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #2575fc;
+}
+
+.navbar .login-btn {
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.3rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(40, 40, 80, 0.15);
+    transition: background 0.2s, transform 0.2s;
+}
+
+.navbar .login-btn:hover {
+    background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.content {
+    margin: 3rem auto;
+    max-width: 700px;
+    color: #fff;
+    box-shadow: 0 8px 32px rgba(40, 40, 80, 0.12);
+    padding: 60px;
+}
+
+.content .login-btn2 {
+    background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1.3rem;
+    border-radius: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(40, 40, 80, 0.15);
+    transition: background 0.2s, transform 0.2s;
+}

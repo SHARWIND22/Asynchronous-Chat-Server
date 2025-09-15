@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Chat</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='create_chat_style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create a New Chat</h2>
+        <p>Share this code with others to join your chat:</p>
+        <div class="code-box" id="chatCode">{{ code }}</div>
+        <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+        <div class="copied-msg" id="copiedMsg">Code copied!</div>
+        <a href="{{ url_for('chat_page', room_code=code) }}" class="continue-btn">Continue</a>
+    </div>
+    <script>
+        function copyCode() {
+            const code = document.getElementById('chatCode').innerText;
+            navigator.clipboard.writeText(code).then(function () {
+                document.getElementById('copiedMsg').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('copiedMsg').style.display = 'none';
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+
+</html>

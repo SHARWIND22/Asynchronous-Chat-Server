@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='cp_style.css') }}">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="brand">Chat Page</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="{{ url_for('about_page') }}">About Us</a>
+      <a href="{{ url_for('contact_page') }}">Contact</a>
+    </div>
+
+    <div class="account-dropdown">
+      <a href="#" class="login-btn" id="accountBtn" aria-haspopup="true" aria-expanded="false">Account</a>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-header">{{ username }}</div>
+        <a href="{{ url_for('login_page') }}">Log Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Overlay -->
+  {% if show_overlay %}
+  <div class="overlay" id="chatOverlay">
+    <div class="overlay-box">
+      <h2>Join or Create a Chat Room</h2>
+      <p>You must join or create a chatroom to start chatting.</p>
+      <div class="overlay-actions">
+        <a href="{{ url_for('join_page' ) }}" class="btn">Join Chat</a>
+        <a href="{{ url_for('create_page' ) }}" class="btn">Create Chat</a>
+        <a href="/" class="btn leave">Leave</a>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="chat-container">
+    <div class="messages" id="messages">
+      <!-- Chat messages will appear here -->
+    </div>
+    <div id="typingIndicator" class="typing-indicator"></div>
+    <form class="message-input" id="chatForm">
+      <input type="text" id="messageBox" placeholder="Type your message..." autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <!-- Socket.IO -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+  <script>
+    const username = "{{ username }}";
+    const roomCode = "{{ room_code }}";
+
+    const messages = document.getElementById('messages');
+    const chatForm = document.getElementById('chatForm');
+    const messageBox = document.getElementById('messageBox');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    let typingTimer;
+    let isTyping = false;
+
+    // Initialize Socket.IO
+    const socket = io();
+
+    // Join room when connected (only if valid room)
+    socket.on('connect', function () {
+      console.log('Connected to server');
+      if (roomCode && roomCode !== "None") {
+        socket.emit('join_room', {
+          room: roomCode,
+          username: username
+        });
+        console.log(`Joining room: ${roomCode} as ${username}`);
+      }
+    });
+
+    // Handle form submission
+    chatForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const msg = messageBox.value.trim();
+
+      if (msg && roomCode && roomCode !== "None") {
+        // Send message via SocketIO
+        socket.emit('send_message', {
+          room: roomCode,
+          message: msg,
+          username: username
+        });
+        messageBox.value = '';
+
+        // Stop typing indicator
+        if (isTyping) {
+          socket.emit('typing', {
+            room: roomCode,
+            username: username,
+            is_typing: false
+          });
+          isTyping = false;
+        }
+      }
+    });
+
+    // Typing indicators
+    messageBox.addEventListener('input', function () {
+      if (roomCode && roomCode !== "None") {
+        if (!isTyping) {
+          isTyping = true;
+          socket.emit('typing', {
+            room: roomCode,
+            username: username,
+            is_typing: true
+          });
+        }
+
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(function () {
+          if (isTyping) {
+            socket.emit('typing', {
+              room: roomCode,
+              username: username,
+              is_typing: false
+            });
+            isTyping = false;
+          }
+        }, 2000);
+      }
+    });
+
+    // Socket event handlers
+    socket.on('receive_message', function (data) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${data.username === username ? 'own' : 'other'}`;
+
+      messageDiv.innerHTML = `
+        <div><strong>${data.username}:</strong> ${data.message}</div>
+        <div class="message-time">${data.timestamp}</div>
+      `;
+
+      messages.appendChild(messageDiv);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    socket.on('user_joined', function (data) {
+      const systemMsg = document.createElement('div');
+      systemMsg.className = 'system-message';
+      systemMsg.textContent = data.message;
+      messages.appendChild(systemMsg);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    socket.on('user_left', function (data) {
+      const systemMsg = document.createElement('div');
+      systemMsg.className = 'system-message';
+      systemMsg.textContent = data.message;
+      messages.appendChild(systemMsg);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    socket.on('user_typing', function (data) {
+      if (data.is_typing) {
+        typingIndicator.textContent = `${data.username} is typing...`;
+      } else {
+        typingIndicator.textContent = '';
+      }
+    });
+
+    // Handle connection errors
+    socket.on('connect_error', function (error) {
+      console.error('Connection error:', error);
+    });
+
+    socket.on('disconnect', function () {
+      console.log('Disconnected from server');
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const accountBtn = document.getElementById('accountBtn');
+      const dropdownMenu = document.getElementById('dropdownMenu');
+
+      if (!accountBtn || !dropdownMenu) return;
+
+      accountBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        dropdownMenu.classList.toggle('show');
+        accountBtn.setAttribute('aria-expanded', dropdownMenu.classList.contains('show'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!accountBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          dropdownMenu.classList.remove('show');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
